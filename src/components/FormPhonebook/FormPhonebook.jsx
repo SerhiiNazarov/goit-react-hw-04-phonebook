@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { Formbook, Input, Label, Button } from './FormPhonebook.styled';
+import { Formfield, Input, Label, Button } from './FormPhonebook.styled';
 
 class FormPhonebook extends Component {
   initialValues = {
@@ -30,7 +30,7 @@ class FormPhonebook extends Component {
         onSubmit={this.handleSubmit}
         validationSchema={this.schema}
       >
-        <Formbook autoComplete="off">
+        <Formfield autoComplete="off">
           <Label>
             Name
             <Input type="text" name="name" />
@@ -42,7 +42,7 @@ class FormPhonebook extends Component {
             <ErrorMessage name="number" />
           </Label>
           <Button type="submit">Add contact</Button>
-        </Formbook>
+        </Formfield>
       </Formik>
     );
   }
