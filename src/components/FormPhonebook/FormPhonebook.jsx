@@ -10,12 +10,12 @@ class FormPhonebook extends Component {
     number: '',
   };
 
+  pattern =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   schema = yup.object().shape({
     name: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required(),
-    number: yup.number().min(6, 'Too Short!').required(),
-    createdOn: yup.date().default(function () {
-      return new Date();
-    }),
+    number: yup.string().matches(this.pattern, 'Phone number is not valid'),
   });
 
   handleSubmit = (values, { resetForm }) => {
@@ -34,12 +34,20 @@ class FormPhonebook extends Component {
           <Label>
             Name
             <Input type="text" name="name" />
-            <ErrorMessage name="name" />
+            <ErrorMessage
+              name="name"
+              component="div"
+              style={{ color: '#d95d5d' }}
+            />
           </Label>
           <Label>
             Number
             <Input type="tel" name="number" />
-            <ErrorMessage name="number" />
+            <ErrorMessage
+              name="number"
+              component="div"
+              style={{ color: '#d95d5d' }}
+            />
           </Label>
           <Button type="submit">Add contact</Button>
         </Formfield>
