@@ -10,12 +10,26 @@ class FormPhonebook extends Component {
     number: '',
   };
 
-  pattern =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  patternName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+
+  patternNumber =
+    /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 
   schema = yup.object().shape({
-    name: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required(),
-    number: yup.string().matches(this.pattern, 'Phone number is not valid'),
+    name: yup
+      .string()
+      .min(2, 'Name is too Short!')
+      .max(30, 'name is too Long!')
+      .matches(
+        this.patternName,
+        'Name may contain only latin letters, apostrophe, dash and spaces.'
+      )
+      .required(),
+    number: yup
+      .string()
+      .min(6, 'Phone number must be less than 6 characters')
+      .matches(this.patternNumber, 'Phone number is not valid')
+      .required(),
   });
 
   handleSubmit = (values, { resetForm }) => {

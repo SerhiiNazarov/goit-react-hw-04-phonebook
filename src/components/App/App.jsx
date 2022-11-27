@@ -73,18 +73,21 @@ class App extends Component {
   render() {
     const { filter, contacts } = this.state;
     const visibleContacts = this.getVisibleContacts();
+    const handleAddContact = this.addContact;
+    const handleChangeFilter = this.changeFilter;
+    const handleDeleteContact = this.deleteContact;
     return (
       <Container>
         <h1>Phonebook</h1>
-        <FormPhonebook onSubmit={this.addContact} />
+        <FormPhonebook onSubmit={handleAddContact} />
         <h2>Contacts</h2>
         {contacts.length > 1 && (
-          <Filter value={filter} onChange={this.changeFilter} />
+          <Filter value={filter} onChange={handleChangeFilter} />
         )}
         {contacts.length > 0 ? (
           <Contacts
             contacts={visibleContacts}
-            onDeleteContact={this.deleteContact}
+            onDeleteContact={handleDeleteContact}
           />
         ) : (
           <p>Your phonebook is empty. Please add contact.</p>
