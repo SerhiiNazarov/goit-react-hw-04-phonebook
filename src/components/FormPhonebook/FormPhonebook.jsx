@@ -1,59 +1,49 @@
 import { Component } from 'react';
+import { Formik, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { Form, Input, Label, Button } from './FormPhonebook.styled';
+import { Formbook, Input, Label, Button } from './FormPhonebook.styled';
 
 class FormPhonebook extends Component {
-  state = {
+  initialValues = {
     name: '',
     number: '',
   };
 
-  handleChange = event => {
-    const { name, value } = event.currentTarget;
+  schema = yup.object().shape({
+    name: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required(),
+    number: yup.number().min(6, 'Too Short!').required(),
+    createdOn: yup.date().default(function () {
+      return new Date();
+    }),
+  });
 
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-
-    this.props.onSubmit(this.state);
-
-    this.setState({ name: '', number: '' });
+  handleSubmit = (values, { resetForm }) => {
+    this.props.onSubmit(values);
+    resetForm();
   };
 
   render() {
-    const { name, number } = this.state;
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Label>
-          Name
-          <Input
-            type="text"
-            name="name"
-            value={name}
-            onChange={this.handleChange}
-            placeholder="Name contact"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-        </Label>
-        <Label>
-          Number
-          <Input
-            type="tel"
-            name="number"
-            value={number}
-            onChange={this.handleChange}
-            placeholder="Phone number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-        </Label>
-        <Button type="submit">Add contact</Button>
-      </Form>
+      <Formik
+        initialValues={this.initialValues}
+        onSubmit={this.handleSubmit}
+        validationSchema={this.schema}
+      >
+        <Formbook autoComplete="off">
+          <Label>
+            Name
+            <Input type="text" name="name" />
+            <ErrorMessage name="name" />
+          </Label>
+          <Label>
+            Number
+            <Input type="tel" name="number" />
+            <ErrorMessage name="number" />
+          </Label>
+          <Button type="submit">Add contact</Button>
+        </Formbook>
+      </Formik>
     );
   }
 }

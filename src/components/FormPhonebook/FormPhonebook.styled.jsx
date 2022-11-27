@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { Form, Field } from 'formik';
 
-export const Form = styled.form`
+export const Formbook = styled(Form)`
   margin-top: 10px;
   margin-bottom: 30px;
 `;
 
-export const Input = styled.input`
+export const Input = styled(Field)`
   display: block;
   margin-left: auto;
   margin-right: auto;

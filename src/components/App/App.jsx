@@ -12,6 +12,8 @@ class App extends Component {
   };
 
   addContact = ({ name, number }) => {
+    console.log(name);
+    console.log(number);
     const contact = {
       id: nanoid(),
       name,
